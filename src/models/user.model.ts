@@ -2,6 +2,8 @@ import mongoose, { mongo } from "mongoose";
 import * as yup from 'yup';
 import encrypt from "../utils/encrypt";
 import { NextFunction } from "express";
+import { renderHtml, sendMail } from "../utils/mail/nodemailer";
+import { CLIENT_HOST, MY_EMAIL } from "../utils/env";
 
 
 const yupPassword = yup.string()
@@ -36,6 +38,7 @@ interface IUser extends Omit<IUserForm, "confirmPassword"> {
     avatar: string;
     isOnline: boolean;
     lastSeen?: Date;
+    createdAt?: string; 
 }
 
 
@@ -89,6 +92,33 @@ schemaUser.pre("save", async function () {
   user.password = encrypt(user.password);
   user.activationCode = encrypt(`${user._id}`);
 });
+
+schemaUser.post("save", async function(doc, next) {
+    try {
+        const user = doc;
+    
+        const html = await renderHtml("mail-activation.ejs", {
+            title: "Chat App",
+            userName: user.userName,
+            fullName: user.fullName,
+            email: user.email,
+            link: `${CLIENT_HOST}/auth/activation?code=${user.activationCode}`,
+            tanggal: user.createdAt
+        });
+    
+        await sendMail({
+            from: MY_EMAIL,
+            to: user.email,
+            subject: "Aktivasi Akun",
+            html: html
+        });
+    
+    } catch (error) {
+        console.log(error);
+    } finally {
+        next();
+    }
+})
 
 
 
