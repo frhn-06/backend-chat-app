@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import router from './routes/api';
 import db from './utils/db';
 import bodyParser from 'body-parser';
@@ -14,6 +14,17 @@ const init = async () => {
 
 
         app.use(bodyParser.json());
+
+
+        app.get("/", (req: Request, res: Response) => {
+            res.status(200).json({
+                meta: {
+                    status: 200,
+                    message: "ok"
+                },
+                data: "backend chat app"
+            })
+        })
         
         app.use("/api", router);
         

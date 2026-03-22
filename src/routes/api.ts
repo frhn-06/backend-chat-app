@@ -4,7 +4,7 @@ import authController from '../controllers/auth.controller';
 
 const router = express.Router();
 
-router.get("/", dummyController.dummy);
+// router.get("/", dummyController.dummy);
 
 
 router.post("/auth/register", authController.register);
