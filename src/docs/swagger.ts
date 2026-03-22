@@ -4,8 +4,8 @@ import swaggerAutogen from "swagger-autogen";
 const doc = {
     info: {
         version: "v0.0.1",
-        title: "Dokumentasi API Produk Tas Velaro",
-        description: "ini adalah dokumenati rest API untuk backend dari aplikasi produk tas Velaro By Farhan"
+        title: "Dokumentasi API Chat App",
+        description: "ini adalah dokumenati rest API untuk backend dari aplikasi Chat App Realtime"
     },
     servers: [
         {
@@ -13,7 +13,7 @@ const doc = {
             description: "Local Server"
         },
         {
-            url: "https://backend-produk-tas.vercel.app/api",
+            url: "https://backend-chat-app-frhn.vercel.app/api",
             description: "Deploy Server"
         }
     ],

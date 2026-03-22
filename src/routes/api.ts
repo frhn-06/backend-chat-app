@@ -7,8 +7,36 @@ const router = express.Router();
 // router.get("/", dummyController.dummy);
 
 
-router.post("/auth/register", authController.register);
+router.post("/auth/register", authController.register
+    /*
+      #swagger.tags = ["Auth"]
+      #swagger.requestBody = {
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              $ref: "#/components/schemas/RegisterRequest"
+            }
+          }
+        }
+      }
+    */
+);
 
-router.post("/auth/activation", authController.activation);
+router.post("/auth/activation", authController.activation
+    /*
+      #swagger.tags = ["Auth"]
+      #swagger.requestBody = {
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              $ref: "#/components/schemas/Activation"
+            }
+          }
+        }
+      }
+    */
+);
 
 export default router

@@ -2,6 +2,8 @@ import express, { Request, Response } from 'express';
 import router from './routes/api';
 import db from './utils/db';
 import bodyParser from 'body-parser';
+import cors from 'cors';
+import docs from './docs/route';
 
 
 
@@ -11,7 +13,9 @@ const init = async () => {
         console.log("database status: " + result)
 
         const app = express();
-
+        const port = 3000;
+    
+        app.use(cors());
 
         app.use(bodyParser.json());
 
@@ -28,8 +32,8 @@ const init = async () => {
         
         app.use("/api", router);
         
-        
-        const port = 3000;
+        docs(app);        
+
         
         
         app.listen(port, () => {

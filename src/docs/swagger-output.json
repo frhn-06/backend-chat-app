@@ -1,0 +1,110 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "v0.0.1",
+    "title": "Dokumentasi API Chat App",
+    "description": "ini adalah dokumenati rest API untuk backend dari aplikasi Chat App Realtime"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api",
+      "description": "Local Server"
+    },
+    {
+      "url": "https://backend-chat-app-frhn.vercel.app/api",
+      "description": "Deploy Server"
+    }
+  ],
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/activation": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Activation"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "RegisterRequest": {
+        "type": "object",
+        "properties": {
+          "fullName": {
+            "type": "string",
+            "example": "farhan"
+          },
+          "userName": {
+            "type": "string",
+            "example": "aan"
+          },
+          "email": {
+            "type": "string",
+            "example": "farhan@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "psswrd"
+          },
+          "confirmPassword": {
+            "type": "string",
+            "example": "psswrd"
+          }
+        }
+      },
+      "Activation": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "example": "123"
+          }
+        }
+      }
+    }
+  }
+}
