@@ -34,6 +34,10 @@ const doc = {
             },
             Activation: {
                 code: "123"
+            },
+            LoginRequest: {
+                identifier: "email/username",
+                password: "psswrd"
             }
         }
     }

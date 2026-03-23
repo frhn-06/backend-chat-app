@@ -29,10 +29,20 @@ export const userDTO = yup.object({
     confirmPassword: yupConfirmPassword, 
 });
 
+export const loginDTO = yup.object({
+    identifier: yup.string().required(),
+    password: yup.string().required()
+})
+
 
 export type IUserForm = yup.InferType<typeof userDTO>;
 
-interface IUser extends Omit<IUserForm, "confirmPassword"> {
+export type ILogin = {
+    identifier: string;
+    password: string;
+}
+
+export interface IUser extends Omit<IUserForm, "confirmPassword"> {
     isActive: boolean;
     activationCode: string;
     avatar: string;

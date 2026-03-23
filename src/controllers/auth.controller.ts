@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
 import response from '../utils/response';
-import UserModel, { userDTO } from "../models/user.model";
+import UserModel, { ILogin, IUser, loginDTO, userDTO } from "../models/user.model";
+import encrypt from "../utils/encrypt";
+import { getUserByToken, signIn } from "../utils/jwt";
+import { IReqUser } from "../types/user";
 
 const authController = {
     async register(req:Request, res:Response) {
@@ -35,6 +38,58 @@ const authController = {
 
         } catch(error) {
             response.error(res, error, "failed to activation")
+        }
+    },
+
+    async login(req: Request, res: Response) {
+        try {
+            const {identifier, password} = req.body as ILogin;
+
+
+            await loginDTO.validate({identifier, password});
+
+            const data = await UserModel.findOne({
+                $or : [
+                    {
+                        email: identifier
+                    },
+                    {
+                        userName: identifier
+                    }
+                ],
+                isActive: true
+            });
+
+            if(!data) {
+                return response.error(res, null, "user not found");
+            }
+
+            
+            const passwordMatch: boolean = data.password === encrypt(password);
+            if(!passwordMatch) {
+                return response.error(res, null,"your password is wrong");
+            }
+        
+            const token = signIn({
+                id: data._id
+            });
+
+            response.success(res, token, "user success to login");
+            
+        } catch (error) {
+            response.error(res, error, "failed to login")
+        }
+    },
+
+    async me(req: IReqUser, res: Response) {
+        try{
+            const user = await UserModel.findById(req.user?.id);
+    
+            if(!user) return response.unauthorize(res);
+    
+            response.success(res, user, "success to get me");
+        }catch(error) {
+            response.error(res, null, "failed to get me");
         }
     }
 }

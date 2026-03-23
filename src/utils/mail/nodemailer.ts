@@ -6,11 +6,11 @@ import ejs from 'ejs';
 import path from 'path';
 
 const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: MY_EMAIL,
-    pass: EMAIL_PASSWORD
-  },
+    service: "gmail",
+    auth: {
+        user: MY_EMAIL,
+        pass: EMAIL_PASSWORD
+    },
 });
 
 interface ISendMail {
