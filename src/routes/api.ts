@@ -2,11 +2,16 @@ import express from 'express';
 import dummyController from '../controllers/dummy.controller';
 import authController from '../controllers/auth.controller';
 import authMiddleware from '../middleware/auth.middleware';
+import conversationController from '../controllers/conversation.controller';
 
 const router = express.Router();
 
 // router.get("/", dummyController.dummy);
 
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////
 
 router.post("/auth/register", authController.register
     /*
@@ -64,5 +69,36 @@ router.get("/auth/me", authMiddleware, authController.me
       }]
     */
 );
+
+//////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////
+
+router.get("/conversation", [authMiddleware], conversationController.findAll
+    /*
+      #swagger.tags = ["Conversation"]
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+    */
+);
+
+//////////////////////////////////////////////////////////////////////////////////////
+
 
 export default router

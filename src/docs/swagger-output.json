@@ -102,6 +102,24 @@
           }
         ]
       }
+    },
+    "/conversation": {
+      "get": {
+        "tags": [
+          "Conversation"
+        ],
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
     }
   },
   "components": {
