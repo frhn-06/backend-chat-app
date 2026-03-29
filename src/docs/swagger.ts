@@ -38,6 +38,10 @@ const doc = {
             LoginRequest: {
                 identifier: "email/username",
                 password: "psswrd"
+            },
+            MessageRequest: {
+                targetId: ":id",
+                text: ""
             }
         }
     }

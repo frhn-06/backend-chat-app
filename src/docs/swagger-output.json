@@ -120,6 +120,34 @@
           }
         ]
       }
+    },
+    "/message": {
+      "post": {
+        "tags": [
+          "Message"
+        ],
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MessageRequest"
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -174,6 +202,19 @@
           "password": {
             "type": "string",
             "example": "psswrd"
+          }
+        }
+      },
+      "MessageRequest": {
+        "type": "object",
+        "properties": {
+          "targetId": {
+            "type": "string",
+            "example": ":id"
+          },
+          "text": {
+            "type": "string",
+            "example": ""
           }
         }
       }

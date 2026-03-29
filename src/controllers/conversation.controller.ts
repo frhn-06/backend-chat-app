@@ -9,7 +9,7 @@ const conversationController = {
             const userId = req.user?.id;
             if(!userId) return response.unauthorize(res);
     
-            const result = await ConversationModel.find({participants: {$in : [userId]}}).populate("participants", "name avatar").populate("lastMessage.senderId", "name").sort({updatedAt: -1});
+            const result = await ConversationModel.find({participants: {$in : [userId]}}).populate("participants", "fullName avatar").populate("lastMessage.senderId", "fullName").sort({updatedAt: -1});
 
             response.success(res, result, "success to find all conversation");
 

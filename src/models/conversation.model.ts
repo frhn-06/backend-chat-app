@@ -1,11 +1,14 @@
 import mongoose, { ObjectId, Types } from 'mongoose';
 
 
-interface IConversation {
+interface IConversationOnCreate {
     participants: Types.ObjectId[],
+}
+
+interface IConversation extends Omit<IConversationOnCreate, ""> {
     lastMessage: {
         text: string;
-        senderId: Types.ObjectId | null
+        senderId: Types.ObjectId;
     }
 }
 

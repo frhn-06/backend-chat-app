@@ -3,6 +3,7 @@ import dummyController from '../controllers/dummy.controller';
 import authController from '../controllers/auth.controller';
 import authMiddleware from '../middleware/auth.middleware';
 import conversationController from '../controllers/conversation.controller';
+import messageController from '../controllers/message.controller';
 
 const router = express.Router();
 
@@ -97,6 +98,33 @@ router.get("/conversation", [authMiddleware], conversationController.findAll
       }]
     */
 );
+
+//////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////
+
+router.post("/message", [authMiddleware], messageController.create
+    /*
+      #swagger.tags = ["Message"]
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+      #swagger.requestBody = {
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              $ref: "#/components/schemas/MessageRequest"
+            }
+          }
+        }
+      }
+    */
+);
+
 
 //////////////////////////////////////////////////////////////////////////////////////
 
