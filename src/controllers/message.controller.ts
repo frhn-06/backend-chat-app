@@ -69,7 +69,7 @@ const messageController = {
 
             if(!conversation) return response.notFound(res, "conversation not found");
 
-            const result = await MessageModel.find({conversationId: conversationObjectId}).populate("senderId", "fullName avatar").sort({createdAt: 1}).exec();
+            const result = await MessageModel.find({conversationId: conversationObjectId}).populate("senderId", "userName avatar").sort({createdAt: 1}).exec();
 
             
 
