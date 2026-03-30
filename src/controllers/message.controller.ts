@@ -49,6 +49,34 @@ const messageController = {
         } catch (error) {
             return response.error(res, null, "failed to create message");
         }
+    },
+
+
+    async findByConversation(req:IReqUser, res:Response) {
+        try{
+            const userId = req.user?.id;
+            if(!userId) return response.unauthorize(res);
+
+            const userObjectId = new mongoose.Types.ObjectId(userId);
+
+            const {conversationId} = req.params;
+
+            if(!isValidObjectId(conversationId)) return response.notFound(res, "message not found");
+
+            const conversationObjectId = new mongoose.Types.ObjectId(`${conversationId}`);
+
+            const conversation = await ConversationModel.findOne({_id: conversationObjectId, participants: {$in: [userObjectId]}});
+
+            if(!conversation) return response.notFound(res, "conversation not found");
+
+            const result = await MessageModel.find({conversationId: conversationObjectId}).sort({createdAt: 1}).exec();
+
+            
+
+            response.success(res, result, "success to find message by conversation");
+        } catch(error) {
+            return response.error(res, null, "failed to find messae by conversation");
+        }
     }
 }
 

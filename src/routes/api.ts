@@ -125,6 +125,15 @@ router.post("/message", [authMiddleware], messageController.create
     */
 );
 
+router.get("/message/:conversationId", [authMiddleware], messageController.findByConversation
+    /*
+      #swagger.tags = ["Message"]
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+    */
+);
+
 
 //////////////////////////////////////////////////////////////////////////////////////
 

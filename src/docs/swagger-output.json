@@ -148,6 +148,34 @@
           }
         }
       }
+    },
+    "/message/{conversationId}": {
+      "get": {
+        "tags": [
+          "Message"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "conversationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
     }
   },
   "components": {
