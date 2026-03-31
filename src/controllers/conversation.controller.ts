@@ -25,7 +25,7 @@ const conversationController = {
 
             const {id} = req.params;
     
-            const result = await ConversationModel.findById(id);
+            const result = await ConversationModel.findOne({_id: id}).populate("participants", "fullName userName avatar");
 
             if(!result) return response.notFound(res, "conversation by id not found");
 
