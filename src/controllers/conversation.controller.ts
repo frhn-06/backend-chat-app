@@ -23,7 +23,7 @@ const conversationController = {
             const userId = req.user?.id;
             if(!userId) return response.unauthorize(res);
 
-            const id = req.params;
+            const {id} = req.params;
     
             const result = await ConversationModel.findById(id);
 
