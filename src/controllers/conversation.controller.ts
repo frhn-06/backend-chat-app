@@ -16,6 +16,24 @@ const conversationController = {
         } catch(error) {
             response.error(res, null, "failed to find all conversations")
         }        
+    },
+
+    async findById(req:IReqUser, res:Response) {
+        try {
+            const userId = req.user?.id;
+            if(!userId) return response.unauthorize(res);
+
+            const id = req.params;
+    
+            const result = await ConversationModel.findById(id);
+
+            if(!result) return response.notFound(res, "conversation by id not found");
+
+            response.success(res, result, "success to find a conversation");
+
+        } catch(error) {
+            response.error(res, null, "failed to find a conversations")
+        }        
     }
 }
 

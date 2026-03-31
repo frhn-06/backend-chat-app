@@ -99,6 +99,15 @@ router.get("/conversation", [authMiddleware], conversationController.findAll
     */
 );
 
+router.get("/conversation/:id", [authMiddleware], conversationController.findById
+    /*
+      #swagger.tags = ["Conversation"]
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+    */
+);
+
 //////////////////////////////////////////////////////////////////////////////////////
 
 
