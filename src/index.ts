@@ -15,7 +15,7 @@ export let io: any;
 const init = async () => {
     try {
         const result = await db();
-        console.log("database status: " + result)
+        console.log("database status is : " + result)
 
         const app = express();
         const port = 3000;
@@ -81,12 +81,11 @@ const init = async () => {
                 data: "backend chat app"
             })
         })
+
         
         app.use("/api", router);
         
         docs(app);        
-
-        
         
         server.listen(port, () => {
             console.log("server is listening on port : " + port)
