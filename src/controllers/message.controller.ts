@@ -5,6 +5,8 @@ import MessageModel, { IMessageForm, messageDTO } from "../models/message.model"
 import ConversationModel from "../models/conversation.model";
 import mongoose, { isValidObjectId } from "mongoose";
 
+import {io, users} from '../index'
+
 const messageController = {
     async create(req: IReqUser, res:Response) {
         try {
@@ -23,7 +25,7 @@ const messageController = {
             const targetObjectId = new mongoose.Types.ObjectId(targetId);
 
             let conversation = await ConversationModel.findOne({
-                participants: {$in : [senderObjectId, targetObjectId]}
+                participants: {$all : [senderObjectId, targetObjectId]}
             });
 
             if(!conversation) {
@@ -33,13 +35,20 @@ const messageController = {
             
 
             const result = await MessageModel.create({conversationId: conversation._id, senderId: senderObjectId, text: text, image: image})
-
+            
             await ConversationModel.findByIdAndUpdate(conversation._id, {
                 lastMessage: {
                     text: text,
                     senderId: senderObjectId
                 }
             })
+            
+            const receiverId = targetObjectId.toString();         
+            const socketId = users[receiverId];
+            
+            if(socketId) {
+                io.to(socketId).emit("newMessage", result)
+            }
 
             
             response.success(res, result, "success to create message")
@@ -68,6 +77,20 @@ const messageController = {
             const conversation = await ConversationModel.findOne({_id: conversationObjectId, participants: {$in: [userObjectId]}});
 
             if(!conversation) return response.notFound(res, "conversation not found");
+
+            // const receiverObjectId = conversation.participants.find((party) => party._id !== userId);
+
+            // if(receiverObjectId) {
+            //     const receiverId = receiverObjectId.toString();
+
+            //     const socketId = users[receiverId];
+
+            //     if(socketId) {
+            //         io.to(socketId).emit("mengetik", {status: true})
+            //     }
+            // }
+            
+
 
             const result = await MessageModel.find({conversationId: conversationObjectId}).populate("senderId", "userName avatar").sort({createdAt: 1}).exec();
 
