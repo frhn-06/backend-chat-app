@@ -71,6 +71,25 @@ router.get("/auth/me", authMiddleware, authController.me
     */
 );
 
+
+router.get("/user/:name", authMiddleware, authController.searchByName
+    /*
+      #swagger.tags = ["Auth"]
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+    */
+);
+
+router.get("/user/:userId/id", authMiddleware, authController.findUser
+    /*
+      #swagger.tags = ["Auth"]
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+    */
+);
+
 //////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -108,6 +127,15 @@ router.get("/conversation/:id", [authMiddleware], conversationController.findByI
     */
 );
 
+router.get("/conversation/:targetId/participants", [authMiddleware], conversationController.findByParticipants
+    /*
+      #swagger.tags = ["Conversation"]
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+    */
+);
+
 //////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -134,7 +162,7 @@ router.post("/message", [authMiddleware], messageController.create
     */
 );
 
-router.get("/message/:conversationId", [authMiddleware], messageController.findByConversation
+router.get("/message/:targetId/c", [authMiddleware], messageController.findByTargetId
     /*
       #swagger.tags = ["Message"]
       #swagger.security = [{
@@ -142,6 +170,8 @@ router.get("/message/:conversationId", [authMiddleware], messageController.findB
       }]
     */
 );
+
+
 
 
 //////////////////////////////////////////////////////////////////////////////////////

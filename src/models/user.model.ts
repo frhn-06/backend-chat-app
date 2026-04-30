@@ -138,6 +138,11 @@ schemaUser.methods.toJSON = function() {
     return user;
 }
 
+schemaUser.index({
+    userName: "text",
+    fullName: "text"
+})
+
 const UserModel = mongoose.model("User", schemaUser);
 
 export default UserModel;

@@ -103,6 +103,62 @@
         ]
       }
     },
+    "/user/{name}": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/user/{userId}/id": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
     "/conversation": {
       "get": {
         "tags": [
@@ -130,6 +186,34 @@
         "parameters": [
           {
             "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/conversation/{targetId}/participants": {
+      "get": {
+        "tags": [
+          "Conversation"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "targetId",
             "in": "path",
             "required": true,
             "schema": {
@@ -177,7 +261,7 @@
         }
       }
     },
-    "/message/{conversationId}": {
+    "/message/{targetId}/c": {
       "get": {
         "tags": [
           "Message"
@@ -185,7 +269,7 @@
         "description": "",
         "parameters": [
           {
-            "name": "conversationId",
+            "name": "targetId",
             "in": "path",
             "required": true,
             "schema": {

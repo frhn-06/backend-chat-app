@@ -36,19 +36,30 @@ const messageController = {
 
             const result = await MessageModel.create({conversationId: conversation._id, senderId: senderObjectId, text: text, image: image})
             
-            await ConversationModel.findByIdAndUpdate(conversation._id, {
+            const newConversation = await ConversationModel.findByIdAndUpdate(conversation._id, {
                 lastMessage: {
                     text: text,
                     senderId: senderObjectId
                 }
-            })
+            },{
+                new: true
+            }).populate("participants", "userName avatar").exec();
             
-            const receiverId = targetObjectId.toString();         
-            const socketId = users[receiverId];
+            const receiverId = targetObjectId.toString();
+            const userStringId = userId.toString();  
+            const socketTargetId = users[receiverId];
+            const socketUserId = users[userStringId]
             
-            if(socketId) {
-                io.to(socketId).emit("newMessage", result)
+            if(socketTargetId) {
+                io.to(socketTargetId).emit("newMessage", result)
+                
             }
+
+            if(socketTargetId && userId) {
+                io.to(socketTargetId).emit("newConversation", newConversation);
+                io.to(socketUserId).emit("newConversation", newConversation);
+            }
+
 
             
             response.success(res, result, "success to create message")
@@ -57,6 +68,43 @@ const messageController = {
 
         } catch (error) {
             return response.error(res, null, "failed to create message");
+        }
+    },
+
+    async findByTargetId(req:IReqUser, res:Response) {
+        try {
+            const userId = req.user?.id;
+            const {targetId} = req.params;
+
+            if(!(isValidObjectId(userId) && isValidObjectId(targetId))) {
+                return response.error(res, null, "data id tidak ada");
+            }
+
+            let conversation = await ConversationModel.findOne({
+                participants: {
+                    $all: [userId, targetId]
+                }
+            })
+
+            if(!conversation) {
+                return response.success(res, {
+                    conversationId: null,
+                    messages: []
+                }, "conversation masih koosng");
+            }
+
+            const result = await MessageModel.find({
+                conversationId: conversation._id
+            }).populate("senderId", "userName avatar").sort({createdAt: 1}).exec();
+
+            
+
+            response.success(res, {
+                conversationId: conversation._id,
+                messages: result
+            }, "success to find message by targetId");
+        }catch(error) {
+            return response.error(res, null, "failed to find message by taretId");
         }
     },
 
@@ -77,20 +125,6 @@ const messageController = {
             const conversation = await ConversationModel.findOne({_id: conversationObjectId, participants: {$in: [userObjectId]}});
 
             if(!conversation) return response.notFound(res, "conversation not found");
-
-            // const receiverObjectId = conversation.participants.find((party) => party._id !== userId);
-
-            // if(receiverObjectId) {
-            //     const receiverId = receiverObjectId.toString();
-
-            //     const socketId = users[receiverId];
-
-            //     if(socketId) {
-            //         io.to(socketId).emit("mengetik", {status: true})
-            //     }
-            // }
-            
-
 
             const result = await MessageModel.find({conversationId: conversationObjectId}).populate("senderId", "userName avatar").sort({createdAt: 1}).exec();
 

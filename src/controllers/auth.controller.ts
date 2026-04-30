@@ -4,6 +4,8 @@ import UserModel, { ILogin, IUser, loginDTO, userDTO } from "../models/user.mode
 import encrypt from "../utils/encrypt";
 import { getUserByToken, signIn } from "../utils/jwt";
 import { IReqUser } from "../types/user";
+import { isValidObjectId } from "mongoose";
+
 
 const authController = {
     async register(req:Request, res:Response) {
@@ -90,6 +92,52 @@ const authController = {
             response.success(res, user, "success to get me");
         }catch(error) {
             response.error(res, null, "failed to get me");
+        }
+    },
+
+    async findUser(req: IReqUser, res: Response) {
+        try{
+            const {userId} = req.params;
+
+            if(!isValidObjectId(userId)) {
+                return response.notFound(res, "user not found");
+            }
+
+            const result = await UserModel.findById(userId);
+
+            if(!result) {
+                return response.notFound(res, "user not found");
+            }
+
+            response.success(res, result, "success to get user by id")
+
+        }catch(error) {
+            response.error(res, null, "failed to get user by id");
+        }
+    },
+
+    async searchByName(req: IReqUser, res: Response) {
+        try {
+            const userId = req.user?.id;
+            if(!isValidObjectId(userId)) return response.unauthorize(res);
+
+            const {name} = req.params;
+
+            const filter = {
+                _id: {$ne: userId},
+                userName: {$regex: name, $options: "i"},
+                isActive: true
+            } as any;
+
+            const user = await UserModel.find(filter).limit(3).exec();
+
+            if(!user) return response.error(res, null, "user is not found");
+
+            response.success(res, user, "success to search user");
+
+            
+        } catch(error) {
+            response.error(res, null, "failed to search user");
         }
     }
 }
