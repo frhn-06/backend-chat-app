@@ -4,6 +4,8 @@ import authController from '../controllers/auth.controller';
 import authMiddleware from '../middleware/auth.middleware';
 import conversationController from '../controllers/conversation.controller';
 import messageController from '../controllers/message.controller';
+import mediaMiddleware from '../middleware/media.middleware';
+import mediaController from '../controllers/media.controller';
 
 const router = express.Router();
 
@@ -90,6 +92,75 @@ router.get("/user/:userId/id", authMiddleware, authController.findUser
     */
 );
 
+router.post("/user-add-avatar", [authMiddleware, mediaMiddleware.single("file")], authController.addAvatar
+    /*
+      #swagger.tags = ["Auth"]
+      #swagger.requestBody = {
+        required: true,
+        content: {
+          "multipart/form-data": {
+            schema: {
+              type: "object",
+              properties: {
+                avatar : {
+                  type: "string",
+                  format: "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    */
+)
+
+router.delete("/user-remove-avatar", authMiddleware, authController.removeAvatar
+    /*
+      #swagger.tags = ["Auth"]
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+    */
+)
+
+router.put("/user-update-info", authMiddleware, authController.updateInfo
+    /*
+      #swagger.tags = ["Auth"]
+      #swagger.requestBody = {
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              $ref: "#/components/schemas/UpdateInfoRequest"
+            }
+          }
+        }
+      }
+    */
+)
+
+// router.put("/user/:userId/update-avatar", authMiddleware, authController.updateAvatar
+//     /*
+//       #swagger.tags = ["Auth"]
+//       #swagger.requestBody = {
+//         required: true,
+//         content: {
+//           "multipart/form-data": {
+//             schema: {
+//               type: "object",
+//               properties: {
+//                 avatar : {
+//                   type: "string",
+//                   format: "binary"
+//                 }
+//               }
+//             }
+//           }
+//         }
+//       }
+//     */
+// );
+
 //////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -170,6 +241,26 @@ router.get("/message/:targetId/c", [authMiddleware], messageController.findByTar
       }]
     */
 );
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////
+
+router.post("/media/upload-single", [authMiddleware, mediaMiddleware.single("file")], mediaController.single)
+
+router.delete("/media/remove", [authMiddleware], mediaController.remove)
+
+
+
+
+
 
 
 

@@ -159,6 +159,76 @@
         ]
       }
     },
+    "/user-add-avatar": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "avatar": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user-remove-avatar": {
+      "delete": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/user-update-info": {
+      "put": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateInfoRequest"
+              }
+            }
+          }
+        }
+      }
+    },
     "/conversation": {
       "get": {
         "tags": [
@@ -288,6 +358,26 @@
           }
         ]
       }
+    },
+    "/media/upload-single": {
+      "post": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/media/remove": {
+      "delete": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
     }
   },
   "components": {
@@ -353,6 +443,19 @@
             "example": ":id"
           },
           "text": {
+            "type": "string",
+            "example": ""
+          }
+        }
+      },
+      "UpdateInfoRequest": {
+        "type": "object",
+        "properties": {
+          "userName": {
+            "type": "string",
+            "example": ""
+          },
+          "fullName": {
             "type": "string",
             "example": ""
           }

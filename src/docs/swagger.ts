@@ -42,6 +42,10 @@ const doc = {
             MessageRequest: {
                 targetId: ":id",
                 text: ""
+            },
+            UpdateInfoRequest: {
+                userName: "",
+                fullName: ""
             }
         }
     }

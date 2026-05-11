@@ -1,10 +1,11 @@
 import { Request, Response } from "express";
 import response from '../utils/response';
-import UserModel, { ILogin, IUser, loginDTO, userDTO } from "../models/user.model";
+import UserModel, { ILogin, IUser, loginDTO, userDTO, userUpdateInfo } from "../models/user.model";
 import encrypt from "../utils/encrypt";
 import { getUserByToken, signIn } from "../utils/jwt";
 import { IReqUser } from "../types/user";
 import { isValidObjectId } from "mongoose";
+import upload from "../utils/upload";
 
 
 const authController = {
@@ -91,7 +92,7 @@ const authController = {
     
             response.success(res, user, "success to get me");
         }catch(error) {
-            response.error(res, null, "failed to get me");
+            response.error(res, error, "failed to get me");
         }
     },
 
@@ -112,7 +113,7 @@ const authController = {
             response.success(res, result, "success to get user by id")
 
         }catch(error) {
-            response.error(res, null, "failed to get user by id");
+            response.error(res, error, "failed to get user by id");
         }
     },
 
@@ -137,9 +138,144 @@ const authController = {
 
             
         } catch(error) {
-            response.error(res, null, "failed to search user");
+            response.error(res, error, "failed to search user");
+        }
+    },
+
+    async addAvatar(req:IReqUser, res:Response) {
+        try {
+            const userId = req.user?.id;
+            if(!isValidObjectId(userId)) return response.unauthorize(res);
+
+            const file = req.file;
+            if(!file) {
+                return response.error(res, new Error("file tidak ditemukan"), "file tidak ditemukan");
+            }
+
+            let user = await UserModel.findById(userId);
+            
+            const resultUpload = await upload.uploadSingle(file);
+            
+            if(user?.avatar && user.avatar !== resultUpload.secure_url) {
+                await upload.remove(user?.avatar)
+            } 
+            
+            const result = await UserModel.findByIdAndUpdate(userId, {
+                avatar: resultUpload.secure_url
+            }, {
+                new: true
+            })
+
+            response.success(res, result, "success to addAvatar")
+
+            
+        } catch(error) {
+            response.error(res, error, "failed to add avatar");
+        }
+    },
+
+    async removeAvatar(req:IReqUser, res:Response) {
+        try {
+            const userId = req.user?.id;
+            if(!isValidObjectId(userId)) return response.unauthorize(res);
+
+            const user = await UserModel.findById(userId);
+            const oldAvatar = user?.avatar
+
+            if(!oldAvatar) {
+                return response.error(res, new Error("file tidak sesuai"), "file yg dikirim tidak sesuai");
+            }
+            
+            await upload.remove(oldAvatar);
+
+            const result = await UserModel.findByIdAndUpdate(userId, {
+                $unset: {
+                    avatar : ""
+                }
+            }, {
+                new: true
+            });
+
+            response.success(res, result, "success to remove avatar");
+
+            
+        } catch(error) {
+            response.error(res, error, "failed to remove avatar");
+        }
+    },
+
+    async updateInfo(req:IReqUser, res:Response) {
+        try {
+            const userId = req.user?.id;
+            if(!userId) {
+                return response.unauthorize(res);
+            }
+    
+            const {userName, fullName} = req.body as {userName: string; fullName: string}
+
+            const validate = await userUpdateInfo.validate({userName, fullName});
+
+            const result = await UserModel.findByIdAndUpdate(userId, validate, {new:true})
+
+            response.success(res, result, "success to update info");
+
+        } catch(error) {
+            response.error(res, error, "failed to update info");
         }
     }
+
+    // async updateAvatar(req: IReqUser, res: Response) {
+    //     try {
+    //         const userId = req.user?.id;
+    //         if(!isValidObjectId(userId)) return response.unauthorize(res);
+
+    //         const user = await UserModel.findById(userId);
+    //         if(!user) return response.notFound(res, "user not found");
+
+    //         const oldAvatar = user?.avatar;
+
+    //         const {avatar} = req.body as {avatar: string};
+
+    //         const result = await UserModel.findByIdAndUpdate(userId, {
+    //             avatar: avatar
+    //         }, {
+    //             new: true
+    //         })
+
+    //         if(oldAvatar && oldAvatar !== avatar) {
+    //             await upload.remove(oldAvatar);
+    //         }
+            
+    //         response.success(res, result, "success to update avatar");
+    //     } catch(error) {
+    //         response.error(res, error, "failed to update avatar")
+    //     }
+    // },
+
+    // async removeAvatar(req: IReqUser, res: Response) {
+    //     try {
+    //         const userId = req.user?.id;
+    //         if(!isValidObjectId(userId)) return response.unauthorize(res);
+
+    //         const user = await UserModel.findById(userId);
+    //         if(!user) return response.notFound(res, "user not found");
+
+    //         const oldAvatar = user.avatar;
+
+    //         const result = await UserModel.findByIdAndUpdate(userId, {
+    //             avatar: ""
+    //         }, {
+    //             new: true
+    //         })
+
+    //         await upload.remove(oldAvatar);
+
+    //         response.success(res, result, "success to remove avatar")
+
+    //     }catch(error) {
+    //         response.error(res, error, "failed to update avatar")
+    //     }
+    // }
 }
 
 export default authController;

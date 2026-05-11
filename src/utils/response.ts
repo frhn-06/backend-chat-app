@@ -14,6 +14,7 @@ const response = {
     },
 
     error: (res: Response, error: unknown, message: string) => {
+        console.log(error);
         if(error instanceof yup.ValidationError) {
             return res.status(400).json({
                 meta: {

@@ -34,6 +34,11 @@ export const loginDTO = yup.object({
     password: yup.string().required()
 })
 
+export const userUpdateInfo = yup.object({
+    userName: yup.string().optional(),
+    fullName: yup.string().optional()
+})
+
 
 export type IUserForm = yup.InferType<typeof userDTO>;
 
@@ -45,7 +50,7 @@ export type ILogin = {
 export interface IUser extends Omit<IUserForm, "confirmPassword"> {
     isActive: boolean;
     activationCode: string;
-    avatar: string;
+    avatar?: string;
     isOnline: boolean;
     lastSeen?: Date;
     createdAt?: string; 
@@ -74,7 +79,6 @@ const schemaUser = new schema<IUser>({
     },
     avatar: {
         type: schema.Types.String,
-        default: ""
     },
     isOnline: {
         type: schema.Types.Boolean,
