@@ -5,8 +5,8 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import docs from './docs/route';
 
-import { Server, Socket } from 'socket.io';
-import http from 'http'
+// import { Server, Socket } from 'socket.io';
+// import http from 'http'
 
 export const users: Record<string, unknown> = {};
 export let io: any;
