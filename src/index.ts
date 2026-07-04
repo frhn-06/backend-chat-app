@@ -106,5 +106,6 @@ async function init() {
     app.use("/api", router);
 }
 
+init();
 
 export default app;
