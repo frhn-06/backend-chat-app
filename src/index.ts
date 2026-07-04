@@ -91,8 +91,11 @@ import cors from 'cors';
 const app = express();
 
 async function init() {
+    console.log("A");
+
     await db();
     
+    console.log("B");
     
     app.use(cors());
     app.use(bodyParser.json());
