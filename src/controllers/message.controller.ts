@@ -50,15 +50,15 @@ const messageController = {
             const socketTargetId = users[receiverId];
             const socketUserId = users[userStringId]
             
-            if(socketTargetId) {
-                io.to(socketTargetId).emit("newMessage", result)
+            // if(socketTargetId) {
+            //     io.to(socketTargetId).emit("newMessage", result)
                 
-            }
+            // }
 
-            if(socketTargetId && userId) {
-                io.to(socketTargetId).emit("newConversation", newConversation);
-                io.to(socketUserId).emit("newConversation", newConversation);
-            }
+            // if(socketTargetId && userId) {
+            //     io.to(socketTargetId).emit("newConversation", newConversation);
+            //     io.to(socketUserId).emit("newConversation", newConversation);
+            // }
 
 
             
