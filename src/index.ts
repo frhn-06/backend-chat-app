@@ -1,6 +1,6 @@
-// import express, { Request, Response } from 'express';
+import express, { Request, Response } from 'express';
 import router from './routes/api';
-// import db from './utils/db';
+import db from './utils/db';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 // import docs from './docs/route';
@@ -87,19 +87,24 @@ import cors from 'cors';
 
 
 
-import express from "express";
 
 const app = express();
 
-app.use(cors());
-app.use(bodyParser.json());
+async function init() {
+    await db();
+    
+    
+    app.use(cors());
+    app.use(bodyParser.json());
+    
+    app.get("/", (_, res) => {
+      res.json({
+        message: "hello"
+      });
+    });
+    
+    app.use("/api", router);
+}
 
-app.get("/", (_, res) => {
-  res.json({
-    message: "hello"
-  });
-});
-
-app.use("/api", router);
 
 export default app;
