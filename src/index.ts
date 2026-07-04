@@ -21,50 +21,31 @@ const init = async () => {
         const port = process.env.PORT || 3000;
 
 
-        const server = http.createServer(app);
+        // const server = http.createServer(app);
 
-        io = new Server(server, {
-            cors: {
-                origin: '*'
-            }
-        });
+        // io = new Server(server, {
+        //     cors: {
+        //         origin: '*'
+        //     }
+        // });
 
 
-        io.on("connection", (socket: Socket) => {
-            socket.on("register", (userId) => {
-                users[userId] = socket.id;
-                console.log("berhasil register");
-            });
+        // io.on("connection", (socket: Socket) => {
+        //     socket.on("register", (userId) => {
+        //         users[userId] = socket.id;
+        //         console.log("berhasil register");
+        //     });
 
-            // socket.on("mengetik", (targetId) => {
-            //     const socketId = users[targetId]
 
-            //     if(socketId) {
-            //         io.to(socketId).emit("mengetik", {
-            //             target: targetId
-            //         })
-            //     }
-            // })
-
-            // socket.on("stopMengetik", (targetId) => {
-            //     const socketId = users[targetId];
-
-            //     if(socketId) {
-            //         io.to(socketId).emit("stopMengetik", {
-            //             target: targetId
-            //         })
-            //     }
-            // })
-
-            socket.on("disconnect", () => {
-                for(const userId in users) {
-                    if(users[userId] === socket.id) {
-                        delete users[userId];
-                    }
-                }
-                console.log("berhasil disconet");
-            })
-        })
+        //     socket.on("disconnect", () => {
+        //         for(const userId in users) {
+        //             if(users[userId] === socket.id) {
+        //                 delete users[userId];
+        //             }
+        //         }
+        //         console.log("berhasil disconet");
+        //     })
+        // })
 
     
         app.use(cors());
@@ -87,7 +68,7 @@ const init = async () => {
         
         docs(app);        
         
-        server.listen(port, () => {
+        app.listen(port, () => {
             console.log("server is listening on port : " + port)
         })
     } catch (error) {
