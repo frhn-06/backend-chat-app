@@ -5,7 +5,7 @@ import MessageModel, { IMessageForm, messageDTO } from "../models/message.model"
 import ConversationModel from "../models/conversation.model";
 import mongoose, { isValidObjectId } from "mongoose";
 
-import {io, users} from '../index'
+// import {io, users} from '../index'
 
 const messageController = {
     async create(req: IReqUser, res:Response) {
@@ -47,8 +47,8 @@ const messageController = {
             
             const receiverId = targetObjectId.toString();
             const userStringId = userId.toString();  
-            const socketTargetId = users[receiverId];
-            const socketUserId = users[userStringId]
+            // const socketTargetId = users[receiverId];
+            // const socketUserId = users[userStringId]
             
             // if(socketTargetId) {
             //     io.to(socketTargetId).emit("newMessage", result)
