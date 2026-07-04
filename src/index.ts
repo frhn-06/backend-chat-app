@@ -14,8 +14,8 @@ export let io: any;
 
 const init = async () => {
     try {
-        const result = await db();
-        console.log("database status is : " + result)
+        // const result = await db();
+        // console.log("database status is : " + result)
 
         const app = express();
         const port = process.env.PORT || 3000;
