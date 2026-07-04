@@ -1,9 +1,9 @@
 import express, { Request, Response } from 'express';
-import router from './routes/api';
-import db from './utils/db';
-import bodyParser from 'body-parser';
-import cors from 'cors';
-import docs from './docs/route';
+// import router from './routes/api';
+// import db from './utils/db';
+// import bodyParser from 'body-parser';
+// import cors from 'cors';
+// import docs from './docs/route';
 
 // import { Server, Socket } from 'socket.io';
 // import http from 'http'
@@ -48,9 +48,9 @@ const init = async () => {
         // })
 
     
-        app.use(cors());
+        // app.use(cors());
 
-        app.use(bodyParser.json());
+        // app.use(bodyParser.json());
 
 
         app.get("/", (req: Request, res: Response) => {
@@ -64,7 +64,7 @@ const init = async () => {
         })
 
         
-        app.use("/api", router);
+        // app.use("/api", router);
         
         // docs(app);        
         
