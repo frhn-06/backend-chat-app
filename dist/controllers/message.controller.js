@@ -83,13 +83,13 @@ const messageController = {
                 const userStringId = userId.toString();
                 const socketTargetId = index_1.users[receiverId];
                 const socketUserId = index_1.users[userStringId];
-                if (socketTargetId) {
-                    index_1.io.to(socketTargetId).emit("newMessage", result);
-                }
-                if (socketTargetId && userId) {
-                    index_1.io.to(socketTargetId).emit("newConversation", newConversation);
-                    index_1.io.to(socketUserId).emit("newConversation", newConversation);
-                }
+                // if(socketTargetId) {
+                //     io.to(socketTargetId).emit("newMessage", result)
+                // }
+                // if(socketTargetId && userId) {
+                //     io.to(socketTargetId).emit("newConversation", newConversation);
+                //     io.to(socketUserId).emit("newConversation", newConversation);
+                // }
                 response_1.default.success(res, result, "success to create message");
             }
             catch (error) {
