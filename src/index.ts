@@ -66,7 +66,7 @@ const init = async () => {
         
         app.use("/api", router);
         
-        docs(app);        
+        // docs(app);        
         
         app.listen(port, () => {
             console.log("server is listening on port : " + port)
