@@ -1,5 +1,5 @@
 // import express, { Request, Response } from 'express';
-// import router from './routes/api';
+import router from './routes/api';
 // import db from './utils/db';
 import bodyParser from 'body-parser';
 import cors from 'cors';
@@ -99,5 +99,7 @@ app.get("/", (_, res) => {
     message: "hello"
   });
 });
+
+app.use("/api", router);
 
 export default app;
