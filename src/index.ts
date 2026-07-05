@@ -14,59 +14,59 @@ import cors from 'cors';
 
 // const init = async () => {
 //     try {
-        // const result = await db();
-        // console.log("database status is : " + result)
+//         const result = await db();
+//         console.log("database status is : " + result)
 
-        // const app = express();
-        // const port = process.env.PORT || 3000;
-
-
-        // const server = http.createServer(app);
-
-        // io = new Server(server, {
-        //     cors: {
-        //         origin: '*'
-        //     }
-        // });
+//         const app = express();
+//         const port = process.env.PORT || 3000;
 
 
-        // io.on("connection", (socket: Socket) => {
-        //     socket.on("register", (userId) => {
-        //         users[userId] = socket.id;
-        //         console.log("berhasil register");
-        //     });
+//         const server = http.createServer(app);
+
+//         io = new Server(server, {
+//             cors: {
+//                 origin: '*'
+//             }
+//         });
 
 
-        //     socket.on("disconnect", () => {
-        //         for(const userId in users) {
-        //             if(users[userId] === socket.id) {
-        //                 delete users[userId];
-        //             }
-        //         }
-        //         console.log("berhasil disconet");
-        //     })
-        // })
+//         io.on("connection", (socket: Socket) => {
+//             socket.on("register", (userId) => {
+//                 users[userId] = socket.id;
+//                 console.log("berhasil register");
+//             });
+
+
+//             socket.on("disconnect", () => {
+//                 for(const userId in users) {
+//                     if(users[userId] === socket.id) {
+//                         delete users[userId];
+//                     }
+//                 }
+//                 console.log("berhasil disconet");
+//             })
+//         })
 
     
-        // app.use(cors());
+//         app.use(cors());
 
-        // app.use(bodyParser.json());
+//         app.use(bodyParser.json());
 
 
-        // app.get("/", (req: Request, res: Response) => {
-        //     res.status(200).json({
-        //         meta: {
-        //             status: 200,
-        //             message: "ok"
-        //         },
-        //         data: "backend chat app"
-        //     })
-        // })
+//         app.get("/", (req: Request, res: Response) => {
+//             res.status(200).json({
+//                 meta: {
+//                     status: 200,
+//                     message: "ok"
+//                 },
+//                 data: "backend chat app"
+//             })
+//         })
 
         
-        // app.use("/api", router);
+//         app.use("/api", router);
         
-        // docs(app);        
+//         docs(app);        
         
 //         app.listen(port, () => {
 //             console.log("server is listening on port : " + port)
@@ -86,20 +86,7 @@ import cors from 'cors';
 
 
 
-
-const app = express();
-
-
-app.use(cors());
-app.use(bodyParser.json());
-
-app.get("/", (_, res) => {
-  res.json({
-    message: "hello"
-  });
-});
-
-app.use("/api", router);
+import app from './app';
 
 async function init() {
     try {
@@ -111,6 +98,5 @@ async function init() {
 }
 
 init();
-
 
 export default app;
