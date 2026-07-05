@@ -4,12 +4,16 @@ import response from "../utils/response";
 import MessageModel, { IMessageForm, messageDTO } from "../models/message.model";
 import ConversationModel from "../models/conversation.model";
 import mongoose, { isValidObjectId } from "mongoose";
+import db from "../utils/db";
 
 // import {io, users} from '../index'
 
 const messageController = {
     async create(req: IReqUser, res:Response) {
         try {
+            await db();
+            console.log("db okee");
+
             const userId = req.user?.id;
 
             if(!userId) return response.unauthorize(res);
@@ -67,17 +71,20 @@ const messageController = {
 
 
         } catch (error) {
-            return response.error(res, null, "failed to create message");
+            return response.error(res, error, "failed to create message");
         }
     },
 
     async findByTargetId(req:IReqUser, res:Response) {
         try {
+            await db();
+            console.log("db okee");
+
             const userId = req.user?.id;
             const {targetId} = req.params;
 
             if(!(isValidObjectId(userId) && isValidObjectId(targetId))) {
-                return response.error(res, null, "data id tidak ada");
+                return response.notFound(res, "data id tidak ada");
             }
 
             let conversation = await ConversationModel.findOne({
@@ -104,13 +111,16 @@ const messageController = {
                 messages: result
             }, "success to find message by targetId");
         }catch(error) {
-            return response.error(res, null, "failed to find message by taretId");
+            return response.error(res, error, "failed to find message by taretId");
         }
     },
 
 
     async findByConversation(req:IReqUser, res:Response) {
         try{
+            await db();
+            console.log("db okee");
+            
             const userId = req.user?.id;
             if(!userId) return response.unauthorize(res);
 
@@ -132,7 +142,7 @@ const messageController = {
 
             response.success(res, result, "success to find message by conversation");
         } catch(error) {
-            return response.error(res, null, "failed to find messae by conversation");
+            return response.error(res, error, "failed to find messae by conversation");
         }
     }
 }

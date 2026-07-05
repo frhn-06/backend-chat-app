@@ -12,6 +12,10 @@ import db from "../utils/db";
 const authController = {
     async register(req:Request, res:Response) {
         try {
+            await db();
+
+            console.log("db okeee");
+            
             const {userName, fullName, email, password, confirmPassword} = await userDTO.validate(req.body);
 
             const result = await UserModel.create({userName, fullName, email, password});
@@ -25,6 +29,10 @@ const authController = {
 
     async activation(req: Request, res:Response) {
         try {
+            await db();
+
+            console.log("db okeee");
+            
             const {code} = req.body;
             const result = await UserModel.findOneAndUpdate({
                 activationCode: code
@@ -49,7 +57,11 @@ const authController = {
         try {
             await db();
 
-            console.log("okeeee");
+            console.log("db okeee");
+            
+            await db();
+
+            console.log("db okeee");
 
             const {identifier, password} = req.body as ILogin;
 
@@ -124,6 +136,10 @@ const authController = {
 
     async searchByName(req: IReqUser, res: Response) {
         try {
+            await db();
+
+            console.log("db okeee");
+            
             const userId = req.user?.id;
             if(!isValidObjectId(userId)) return response.unauthorize(res);
 
@@ -137,7 +153,7 @@ const authController = {
 
             const user = await UserModel.find(filter).limit(3).exec();
 
-            if(!user) return response.error(res, null, "user is not found");
+            if(!user) return response.notFound(res, "user is not found");
 
             response.success(res, user, "success to search user");
 
@@ -149,12 +165,16 @@ const authController = {
 
     async addAvatar(req:IReqUser, res:Response) {
         try {
+            await db();
+
+            console.log("db okeee");
+            
             const userId = req.user?.id;
             if(!isValidObjectId(userId)) return response.unauthorize(res);
 
             const file = req.file;
             if(!file) {
-                return response.error(res, new Error("file tidak ditemukan"), "file tidak ditemukan");
+                return response.notFound(res, "file tidak ditemukan");
             }
 
             let user = await UserModel.findById(userId);
@@ -181,6 +201,10 @@ const authController = {
 
     async removeAvatar(req:IReqUser, res:Response) {
         try {
+            await db();
+
+            console.log("db okeee");
+            
             const userId = req.user?.id;
             if(!isValidObjectId(userId)) return response.unauthorize(res);
 
@@ -211,6 +235,10 @@ const authController = {
 
     async updateInfo(req:IReqUser, res:Response) {
         try {
+            await db();
+
+            console.log("db okeee");
+            
             const userId = req.user?.id;
             if(!userId) {
                 return response.unauthorize(res);
