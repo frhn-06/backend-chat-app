@@ -6,6 +6,7 @@ import { getUserByToken, signIn } from "../utils/jwt";
 import { IReqUser } from "../types/user";
 import { isValidObjectId } from "mongoose";
 import upload from "../utils/upload";
+import db from "../utils/db";
 
 
 const authController = {
@@ -46,6 +47,8 @@ const authController = {
 
     async login(req: Request, res: Response) {
         try {
+            await db();
+
             const {identifier, password} = req.body as ILogin;
 
 
