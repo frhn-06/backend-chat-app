@@ -1,8 +1,8 @@
-import express, { Request, Response } from 'express';
-import router from './routes/api';
-import db from './utils/db';
-import bodyParser from 'body-parser';
-import cors from 'cors';
+// import express, { Request, Response } from 'express';
+// import router from './routes/api';
+// import db from './utils/db';
+// import bodyParser from 'body-parser';
+// import cors from 'cors';
 // import docs from './docs/route';
 
 // import { Server, Socket } from 'socket.io';
@@ -30,22 +30,22 @@ import cors from 'cors';
 //         });
 
 
-//         io.on("connection", (socket: Socket) => {
-//             socket.on("register", (userId) => {
-//                 users[userId] = socket.id;
-//                 console.log("berhasil register");
-//             });
+        // io.on("connection", (socket: Socket) => {
+        //     socket.on("register", (d) => {
+        //         users[d] = socket.id;
+        //         console.log("berhasil register");
+        //     });
 
 
-//             socket.on("disconnect", () => {
-//                 for(const userId in users) {
-//                     if(users[userId] === socket.id) {
-//                         delete users[userId];
-//                     }
-//                 }
-//                 console.log("berhasil disconet");
-//             })
-//         })
+        //     socket.on("disconnect", () => {
+        //         for(const d in users) {
+        //             if(users[d] === socket.id) {
+        //                 delete users[d];
+        //             }
+        //         }
+        //         console.log("berhasil disconet");
+        //     })
+        // })
 
     
 //         app.use(cors());
@@ -80,13 +80,21 @@ import cors from 'cors';
 
 
 
-
-
-
-
-
-
+import db from './utils/db';
+import http from 'http';
 import app from './app';
+import { initSocket } from './socket';
+
+
+
+const PORT = 3000;
+
+const server = http.createServer(app)
+
+initSocket(server);
+
+server.listen(PORT, () => console.log(`server is listening on port ${PORT}`));
+
 
 async function init() {
     try {
