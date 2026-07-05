@@ -69,13 +69,13 @@ const authController = {
             });
 
             if(!data) {
-                return response.error(res, null, "user not found");
+                return response.notFound(res, "user not found");
             }
 
             
             const passwordMatch: boolean = data.password === encrypt(password);
             if(!passwordMatch) {
-                return response.error(res, null,"your password is wrong");
+                return response.error(res, "failed password","your password is wrong");
             }
         
             const token = signIn({
