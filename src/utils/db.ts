@@ -3,7 +3,7 @@ import { DATABASE_URL } from "./env";
 
 const db = async () => {
     try {
-        const result = await mongoose.connect(DATABASE_URL, {
+        await mongoose.connect(DATABASE_URL, {
             dbName: "chat_app"
         });
 
