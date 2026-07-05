@@ -87,28 +87,26 @@ import cors from 'cors';
 
 
 
-
 const app = express();
 
-async function init() {
-    console.log("A");
+app.use(cors());
+app.use(bodyParser.json());
 
-    await db();
-    
-    console.log("B");
-    
-    app.use(cors());
-    app.use(bodyParser.json());
-    
-    app.get("/", (_, res) => {
-      res.json({
-        message: "hello"
-      });
-    });
-    
-    app.use("/api", router);
+app.get("/", (_, res) => {
+  res.json({
+    message: "hello"
+  });
+});
+
+app.use("/api", router);
+
+async function init() {
+    try {
+        await db();
+        console.log("database connected");
+    } catch (err) {
+        console.error(err);
+    }
 }
 
 init();
-
-export default app;
