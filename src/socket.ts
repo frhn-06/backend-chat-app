@@ -1,9 +1,9 @@
 import http from 'http'
 import { Server, Socket } from 'socket.io'
 
-export const users: Record<string, unknown> = {};
+export const users: Record<string, string> = {};
 
-let io : Server
+export let io : Server
 
 
 export const initSocket = (server: http.Server) => {

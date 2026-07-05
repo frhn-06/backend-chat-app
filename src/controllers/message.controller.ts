@@ -6,7 +6,8 @@ import ConversationModel from "../models/conversation.model";
 import mongoose, { isValidObjectId } from "mongoose";
 import db from "../utils/db";
 
-// import {io, users} from '../index'
+
+import {io, users} from '../socket';
 
 const messageController = {
     async create(req: IReqUser, res:Response) {
@@ -51,18 +52,18 @@ const messageController = {
             
             const receiverId = targetObjectId.toString();
             const userStringId = userId.toString();  
-            // const socketTargetId = users[receiverId];
-            // const socketUserId = users[userStringId]
+            const socketTargetId = users[receiverId];
+            const socketUserId = users[userStringId]
             
-            // if(socketTargetId) {
-            //     io.to(socketTargetId).emit("newMessage", result)
+            if(socketTargetId) {
+                io.to(socketTargetId).emit("newMessage", result)
                 
-            // }
+            }
 
-            // if(socketTargetId && userId) {
-            //     io.to(socketTargetId).emit("newConversation", newConversation);
-            //     io.to(socketUserId).emit("newConversation", newConversation);
-            // }
+            if(socketTargetId && socketUserId) {
+                io.to(socketTargetId).emit("newConversation", newConversation);
+                io.to(socketUserId).emit("newConversation", newConversation);
+            }
 
 
             
@@ -120,7 +121,7 @@ const messageController = {
         try{
             await db();
             console.log("db okee");
-            
+
             const userId = req.user?.id;
             if(!userId) return response.unauthorize(res);
 
