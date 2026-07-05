@@ -89,21 +89,21 @@ import cors from 'cors';
 
 const app = express();
 
-app.use(cors());
-app.use(bodyParser.json());
-
-app.get("/", (_, res) => {
-  res.json({
-    message: "hello"
-  });
-});
-
-app.use("/api", router);
 
 async function init() {
-    try {
+  try {
         await db();
         console.log("database connected");
+        app.use(cors());
+        app.use(bodyParser.json());
+        
+        app.get("/", (_, res) => {
+          res.json({
+            message: "hello"
+          });
+        });
+        
+        app.use("/api", router);
     } catch (err) {
         console.error(err);
     }
