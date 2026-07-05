@@ -16,7 +16,7 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const env_1 = require("./env");
 const db = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const result = yield mongoose_1.default.connect(env_1.DATABASE_URL, {
+        yield mongoose_1.default.connect(env_1.DATABASE_URL, {
             dbName: "chat_app"
         });
         console.log(`Active db name : ${mongoose_1.default.connection.name}`);

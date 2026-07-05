@@ -49,7 +49,7 @@ const response_1 = __importDefault(require("../utils/response"));
 const message_model_1 = __importStar(require("../models/message.model"));
 const conversation_model_1 = __importDefault(require("../models/conversation.model"));
 const mongoose_1 = __importStar(require("mongoose"));
-const index_1 = require("../index");
+// import {io, users} from '../index'
 const messageController = {
     create(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -81,8 +81,8 @@ const messageController = {
                 }).populate("participants", "userName avatar").exec();
                 const receiverId = targetObjectId.toString();
                 const userStringId = userId.toString();
-                const socketTargetId = index_1.users[receiverId];
-                const socketUserId = index_1.users[userStringId];
+                // const socketTargetId = users[receiverId];
+                // const socketUserId = users[userStringId]
                 // if(socketTargetId) {
                 //     io.to(socketTargetId).emit("newMessage", result)
                 // }
