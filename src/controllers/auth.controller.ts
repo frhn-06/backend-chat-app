@@ -49,6 +49,8 @@ const authController = {
         try {
             await db();
 
+            console.log("okeeee");
+
             const {identifier, password} = req.body as ILogin;
 
 
